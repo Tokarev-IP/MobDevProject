@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MobDevProject</string>
+    <string name="title_activity_content">Title Activity Content</string>
 </resources>
