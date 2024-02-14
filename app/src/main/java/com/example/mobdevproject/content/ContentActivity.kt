@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.mobdevproject.content.presentation.ContentActivityCompose
 import com.example.mobdevproject.ui.theme.MobDevProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,5 +33,5 @@ class ContentActivity : ComponentActivity() {
 
 @Composable
 private fun StartUi(){
-    Text(text = "Hello content")
+    ContentActivityCompose()
 }

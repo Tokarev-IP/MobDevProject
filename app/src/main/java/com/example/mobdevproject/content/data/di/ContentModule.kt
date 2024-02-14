@@ -8,8 +8,10 @@ import com.example.mobdevproject.content.data.repositories.FirestoreReadReposito
 import com.example.mobdevproject.content.data.repositories.StorageRepository
 import com.example.mobdevproject.content.domain.FirestoreAddUseCase
 import com.example.mobdevproject.content.domain.FirestoreReadUseCase
+import com.example.mobdevproject.content.domain.StorageUseCase
 import com.example.mobdevproject.content.domain.interfaces.FirestoreAddUseCaseInterface
 import com.example.mobdevproject.content.domain.interfaces.FirestoreReadUseCaseInterface
+import com.example.mobdevproject.content.domain.interfaces.StorageUseCaseInterface
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -39,5 +41,9 @@ interface ContentModule {
     @Singleton
     @Binds
     fun getStorageInterface(impl: StorageRepository): StorageInterface
+
+    @Singleton
+    @Binds
+    fun getStorageUseCaseInterface(impl: StorageUseCase): StorageUseCaseInterface
 
 }
