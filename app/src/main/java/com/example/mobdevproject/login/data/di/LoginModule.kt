@@ -16,7 +16,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface LoginModules {
+interface LoginModule {
 
     @Singleton
     @Binds

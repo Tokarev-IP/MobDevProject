@@ -37,7 +37,7 @@ fun SignInActivityCompose(
     onPhoneSignIn: (smsCode: String) -> Unit,
     onSendCodeToPhoneNumber: (phoneNUmber: String) -> Unit,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = "SignInScreen",
+    startDestination: String = NavigateRoutes.SignInScreen.route,
 ) {
     val screenState by signInViewModel.getScreenStateFlow().collectAsState()
     val uiState by signInViewModel.getUiStateFlow().collectAsState()
