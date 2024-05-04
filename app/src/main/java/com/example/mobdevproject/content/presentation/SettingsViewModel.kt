@@ -46,9 +46,7 @@ class SettingsViewModel @Inject constructor(
 
             }
 
-            is SettingsUiIntents.SignOut -> {
-                signOut()
-            }
+            is SettingsUiIntents.SignOut -> {}
 
             is SettingsUiIntents.UpdateEmail -> {
                 uiStates.value = UiStates.Loading
@@ -105,7 +103,15 @@ class SettingsViewModel @Inject constructor(
         )
     }
 
-    private fun signOut() {
+    fun signOut(
+        onSuccess:() -> Unit,
+        userExists:() -> Unit,
+    ) {
         settingsUseCaseInterface.signOut()
+
+        authUseCaseInterface.getCurrentUser(
+            onUser = { userExists() },
+            onNullUser = { onSuccess() }
+        )
     }
 }
