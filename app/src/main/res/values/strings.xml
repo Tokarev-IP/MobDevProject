@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MobDevProject</string>
+    <string name="title_activity_content">Title Activity Content</string>
+    <string name="maximum_of_letters">%1$d out of %2$d </string>
 </resources>
