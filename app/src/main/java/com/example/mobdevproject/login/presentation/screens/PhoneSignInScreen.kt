@@ -74,11 +74,11 @@ fun PhoneSignInScreen(
                 isError = isError,
                 supportingText = {
                     if (isError)
-                        Text(text = "Invalid Email")
+                        Text(text = "Invalid Phone Number")
                     else
-                        Text(text = "Write down a valid Email")
+                        Text(text = "Write down a valid Phone Number")
                 },
-                label = { Text(text = "Email") },
+                label = { Text(text = "Phone Number") },
                 shape = RoundedCornerShape(24.dp),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 trailingIcon = {
@@ -102,6 +102,8 @@ fun PhoneSignInScreen(
             ) {
                 Text(text = "Get a code")
             }
+
+            Spacer(modifier = modifier.height(100.dp))
         }
     }
 }

@@ -28,8 +28,8 @@ class AuthUseCase @Inject constructor(
         onNullUser: (msg: String) -> Unit,
     ) {
         val user = authRepositoryInterface.getCurrentUser()
-        user?.let { user: FirebaseUser ->
-            onUser(user)
+        user?.let { data: FirebaseUser ->
+            onUser(data)
         }
         if (user == null)
             onNullUser("No user was gotten")

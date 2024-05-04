@@ -29,8 +29,8 @@ class SignInViewModel @Inject constructor(
                 when (state) {
                     is PhoneAuthStates.CodeWasSent -> {
                         verificationId = state.verificationId
-                        uiState.value = UiStates.Show
                         screenState.value = ScreenStates.PhoneCodeSignInScreen(phoneNumber)
+                        uiState.value = UiStates.Show
                     }
 
                     is PhoneAuthStates.VerificationFailed -> {
@@ -40,6 +40,7 @@ class SignInViewModel @Inject constructor(
 
                     is PhoneAuthStates.VerificationCompleted -> {
                         signInWithCredential(state.credential)
+                        uiState.value = UiStates.Show
                     }
                 }
             }
@@ -52,15 +53,11 @@ class SignInViewModel @Inject constructor(
     private val uiState: MutableStateFlow<UiStates> = MutableStateFlow(UiStates.Show)
     private val uiStateFlow = uiState.asStateFlow()
 
-    private val userState: MutableStateFlow<FirebaseUser?> = MutableStateFlow(null)
-    private val userStateFlow = userState.asStateFlow()
-
     private val snackbarState: MutableStateFlow<String?> = MutableStateFlow(null)
     private val snackbarStateFlow = snackbarState.asStateFlow()
 
     fun getScreenStateFlow() = screenStateFlow
     fun getUiStateFlow() = uiStateFlow
-    fun getUserStateFlow() = userStateFlow
     fun getSnackbarStateFlow() = snackbarStateFlow
 
     fun setIntent(uiIntent: UiIntents) {
@@ -68,6 +65,7 @@ class SignInViewModel @Inject constructor(
             is UiIntents.SignInWithEmail -> {
                 uiState.value = UiStates.Loading
                 sendEmailSignInLink(uiIntent.email)
+                uiState.value = UiStates.Show
             }
 
             is UiIntents.SignInWithGoogle -> {
@@ -81,17 +79,20 @@ class SignInViewModel @Inject constructor(
                         snackbarState.value = msg
                     }
                 )
+                uiState.value = UiStates.Show
             }
 
             is UiIntents.SignInWithPhone -> {
                 uiState.value = UiStates.Loading
                 authUseCaseInterface.getSignInCodeSMS(uiIntent.phoneAuthOptions)
                 phoneNumber = uiIntent.phoneNumber
+                uiState.value = UiStates.Show
             }
 
             is UiIntents.CheckUserID -> {
                 uiState.value = UiStates.Loading
                 getUser()
+                uiState.value = UiStates.Show
             }
 
             is UiIntents.SignWithSmsCode -> {
@@ -103,6 +104,7 @@ class SignInViewModel @Inject constructor(
                         signInWithCredential(credential)
                     }
                 )
+                uiState.value = UiStates.Show
             }
         }
     }
@@ -111,7 +113,7 @@ class SignInViewModel @Inject constructor(
         screenState.value = state
     }
 
-    fun setUiState(state: UiStates) {
+    private fun setUiState(state: UiStates) {
         uiState.value = state
     }
 
@@ -132,11 +134,9 @@ class SignInViewModel @Inject constructor(
     private fun getUser() {
         authUseCaseInterface.getCurrentUser(
             onUser = { firebaseUser: FirebaseUser ->
-                userState.value = firebaseUser
-                uiState.value = UiStates.Show
+                setUiState(UiStates.GoToContentActivity)
             },
             onNullUser = {
-                userState.value = null
                 uiState.value = UiStates.Show
             },
         )

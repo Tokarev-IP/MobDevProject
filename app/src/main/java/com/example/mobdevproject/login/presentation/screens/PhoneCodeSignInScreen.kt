@@ -78,7 +78,7 @@ fun PhoneCodeSignInScreen(
                 isError = isError,
                 supportingText = {
                     if (isError)
-                        Text(text = "Invalid Email")
+                        Text(text = "Invalid Code")
                     else
                         Text(text = "Write down the code from SMS")
                 },

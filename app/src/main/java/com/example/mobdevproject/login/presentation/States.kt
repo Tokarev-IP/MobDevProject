@@ -22,12 +22,13 @@ interface ScreenStates {
     data class PhoneCodeSignInScreen(val phoneNumber: String) : ScreenStates
 }
 
-sealed interface UiStates {
+interface UiStates {
     data object Show : UiStates
     data object Error : UiStates
     data object Loading : UiStates
     data object CodeWasSent : UiStates
     data object UserWasFound : UiStates
+    data object GoToContentActivity: UiStates
 }
 
 interface PhoneAuthStates {

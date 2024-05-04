@@ -1,5 +1,6 @@
 package com.example.mobdevproject.login.presentation
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,9 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mobdevproject.login.presentation.screens.EmailSignInScreen
 import com.example.mobdevproject.login.presentation.screens.PhoneCodeSignInScreen
 import com.example.mobdevproject.login.presentation.screens.PhoneSignInScreen
@@ -31,7 +34,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SignInActivityCompose(
     modifier: Modifier = Modifier,
-    signInViewModel: SignInViewModel = hiltViewModel<SignInViewModel>(),
+    signInViewModel: SignInViewModel = hiltViewModel(),
     onGoogleSignIn: () -> Unit,
     onEmailSignIn: (email: String) -> Unit,
     onPhoneSignIn: (smsCode: String) -> Unit,
@@ -48,19 +51,24 @@ fun SignInActivityCompose(
 
     when (screenState) {
         is ScreenStates.PhoneSignInScreen -> {
+            Log.d("DAVAI", "PhoneSignInScreen screenState")
             navController.navigate(NavigateRoutes.PhoneSignInScreen.route)
         }
 
         is ScreenStates.EmailSignInScreen -> {
+            Log.d("DAVAI", "EmailSignInScreen screenState")
             navController.navigate(NavigateRoutes.EmailSignInScreen.route)
         }
 
         is ScreenStates.SignInScreen -> {
+            Log.d("DAVAI", "SignInScreen screenState")
             navController.navigate(NavigateRoutes.SignInScreen.route)
         }
 
         is ScreenStates.PhoneCodeSignInScreen -> {
-            navController.navigate(NavigateRoutes.PhoneCodeSignInScreen.route)
+            Log.d("DAVAI", "PhoneCodeSignInScreen screenState")
+            val phoneNumber = (screenState as ScreenStates.PhoneCodeSignInScreen).phoneNumber
+            navController.navigate(NavigateRoutes.PhoneCodeSignInScreen.route + "/$phoneNumber")
         }
     }
 
@@ -93,6 +101,7 @@ fun SignInActivityCompose(
             startDestination = startDestination
         ) {
             composable(NavigateRoutes.SignInScreen.route) {
+                Log.d("DAVAI", "SignInScreen state")
                 SignInScreen(
                     onEmailLogin = { signInViewModel.setScreenState(ScreenStates.EmailSignInScreen) },
                     onPhoneLogin = { signInViewModel.setScreenState(ScreenStates.PhoneSignInScreen) },
@@ -102,6 +111,7 @@ fun SignInActivityCompose(
             }
 
             composable(NavigateRoutes.EmailSignInScreen.route) {
+                Log.d("DAVAI", "EmailSignInScreen state")
                 EmailSignInScreen(
                     onNavigationTopBar = { navController.popBackStack() },
                     onSignInEmail = { email: String ->
@@ -112,6 +122,7 @@ fun SignInActivityCompose(
             }
 
             composable(NavigateRoutes.PhoneSignInScreen.route) {
+                Log.d("DAVAI", "PhoneSignInScreen state")
                 PhoneSignInScreen(
                     onSendCodeToPhoneNumber = { phoneNumber: String ->
                         onSendCodeToPhoneNumber(phoneNumber)
@@ -121,11 +132,18 @@ fun SignInActivityCompose(
                 )
             }
 
-            composable(NavigateRoutes.PhoneCodeSignInScreen.route) {
+            composable(
+                NavigateRoutes.PhoneCodeSignInScreen.route + "/{phoneNumber}",
+                arguments = listOf(
+                    navArgument("phoneNumber") { type = NavType.StringType },
+                ),
+            ) { backStackEntry ->
+                Log.d("DAVAI", "PhoneCodeSignInScreen state")
+                val phoneNumber = backStackEntry.arguments?.getString("phoneNumber") ?: ""
                 PhoneCodeSignInScreen(
-                    phoneNumber = (screenState as ScreenStates.PhoneCodeSignInScreen).phoneNumber,
+                    phoneNumber = phoneNumber,
                     onChangePhoneNumber = {
-                        // TODO:
+                        navController.popBackStack()
                     },
                     onSignInWithSmsCode = { smsCode: String ->
                         onPhoneSignIn(smsCode)

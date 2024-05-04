@@ -55,12 +55,12 @@ fun SignInScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            Button(
-                onClick = { onEmailLogin() },
-                enabled = (uiState is UiStates.Show),
-            ) {
-                Text(text = "Email")
-            }
+//            Button(
+//                onClick = { onEmailLogin() },
+//                enabled = (uiState is UiStates.Show),
+//            ) {
+//                Text(text = "Email")
+//            }
 
             Spacer(modifier = modifier.height(16.dp))
 
@@ -72,13 +72,13 @@ fun SignInScreen(
             }
             Spacer(modifier = modifier.height(16.dp))
 
-            Button(
-                onClick = { onGoogleLogin() },
-                enabled = (uiState is UiStates.Show),
-            ) {
-                Text(text = "Google Account")
-                Icon(Icons.Default.AccountCircle, "Account icon")
-            }
+//            Button(
+//                onClick = { onGoogleLogin() },
+//                enabled = (uiState is UiStates.Show),
+//            ) {
+//                Text(text = "Google Account")
+//                Icon(Icons.Default.AccountCircle, "Account icon")
+//            }
         }
     }
 }
