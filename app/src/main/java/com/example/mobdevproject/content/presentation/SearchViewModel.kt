@@ -1,6 +1,5 @@
 package com.example.mobdevproject.content.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mobdevproject.content.data.MenuData
@@ -41,6 +40,7 @@ class SearchViewModel @Inject constructor(
             is SearchUiIntents.UseQrCode -> {
                 uiIntents.qrCodeText?.let { qrCodeText ->
                     getDataById(qrCodeText)
+                    screenState.value = SearchScreenStates.MenuScreen
                 }
             }
 

@@ -1,7 +1,6 @@
 package com.example.mobdevproject.content.presentation.screens.search
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -58,7 +57,6 @@ fun SearchScreen(
             startDestination = startDestination,
         ) {
             composable(route = SearchNavHostRoute.StartDestinationCompose.route) {
-                Log.d("DAVAI", "StartDestinationCompose")
                 StartDestinationCompose()
                 searchViewModel.setUiIntent(SearchUiIntents.GetAllMenus)
             }
