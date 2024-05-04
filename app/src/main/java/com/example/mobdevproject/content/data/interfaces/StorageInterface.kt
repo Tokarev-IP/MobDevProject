@@ -8,15 +8,21 @@ interface StorageInterface {
 
     fun uploadFile(
         pathString: String,
-        uri: Uri,
+        fileUri: Uri,
         onSuccess: (task: UploadTask.TaskSnapshot) -> Unit,
         onFailure: (e: Exception) -> Unit,
     )
 
-    fun downloadFile(
+    fun uploadFileByteArray(
         pathString: String,
-        uri: Uri,
-        onSuccess: (task: FileDownloadTask.TaskSnapshot) -> Unit,
+        bytes: ByteArray,
+        onSuccess: (task: UploadTask.TaskSnapshot) -> Unit,
+        onFailure: (e: Exception) -> Unit,
+    )
+
+    fun downloadFileUri(
+        pathString: String,
+        onSuccess: (uri: Uri?) -> Unit,
         onFailure: (e: Exception) -> Unit,
     )
 }

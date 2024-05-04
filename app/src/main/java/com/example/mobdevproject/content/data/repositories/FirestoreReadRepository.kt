@@ -10,16 +10,16 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FirestoreReadRepository @Inject constructor(): FirestoreReadInterface {
+class FirestoreReadRepository @Inject constructor() : FirestoreReadInterface {
 
     private val db: FirebaseFirestore = Firebase.firestore
 
     override fun readDataFromOneCollection(
-        collection1: String,
+        collection: String,
         onSuccess: (result: QuerySnapshot) -> Unit,
         onFailure: (e: Exception) -> Unit,
     ) {
-        db.collection(collection1)
+        db.collection(collection)
             .get()
             .addOnSuccessListener { it: QuerySnapshot ->
                 onSuccess(it)

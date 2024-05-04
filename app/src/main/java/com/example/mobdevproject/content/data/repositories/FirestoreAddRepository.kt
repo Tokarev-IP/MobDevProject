@@ -37,8 +37,7 @@ class FirestoreAddRepository @Inject constructor() : FirestoreAddInterface {
         onSuccess: () -> Unit,
         onFailure: (e: Exception) -> Unit,
     ) {
-        db.collection(collection1).document(documentPath)
-            .collection(collection2).document(documentId)
+        db.collection(collection1).document(documentPath).collection(collection2).document(documentId)
             .set(data)
             .addOnSuccessListener {
                 onSuccess()

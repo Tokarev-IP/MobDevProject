@@ -14,11 +14,11 @@ class StorageRepository @Inject constructor() : StorageInterface {
 
     override fun uploadFile(
         pathString: String,
-        uri: Uri,
+        fileUri: Uri,
         onSuccess: (task: UploadTask.TaskSnapshot) -> Unit,
         onFailure: (e: Exception) -> Unit,
     ) {
-        storageRef.child(pathString).putFile(uri)
+        storageRef.child(pathString).putFile(fileUri)
             .addOnSuccessListener { task: UploadTask.TaskSnapshot ->
                 onSuccess(task)
             }
@@ -27,15 +27,29 @@ class StorageRepository @Inject constructor() : StorageInterface {
             }
     }
 
-    override fun downloadFile(
+    override fun uploadFileByteArray(
         pathString: String,
-        uri: Uri,
-        onSuccess: (task: FileDownloadTask.TaskSnapshot) -> Unit,
+        bytes: ByteArray,
+        onSuccess: (task: UploadTask.TaskSnapshot) -> Unit,
         onFailure: (e: Exception) -> Unit,
     ) {
-        storageRef.child(pathString).getFile(uri)
-            .addOnSuccessListener { task: FileDownloadTask.TaskSnapshot ->
+        storageRef.child(pathString).putBytes(bytes)
+            .addOnSuccessListener { task: UploadTask.TaskSnapshot ->
                 onSuccess(task)
+            }
+            .addOnFailureListener { e: Exception ->
+                onFailure(e)
+            }
+    }
+
+    override fun downloadFileUri(
+        pathString: String,
+        onSuccess: (uri: Uri?) -> Unit,
+        onFailure: (e: Exception) -> Unit,
+    ) {
+        storageRef.child(pathString).downloadUrl
+            .addOnSuccessListener { uri: Uri? ->
+                onSuccess(uri)
             }
             .addOnFailureListener { e: Exception ->
                 onFailure(e)

@@ -6,7 +6,7 @@ import com.google.firebase.firestore.QuerySnapshot
 interface FirestoreReadInterface {
 
     fun readDataFromOneCollection(
-        collection1: String,
+        collection: String,
         onSuccess: (result: QuerySnapshot) -> Unit,
         onFailure: (e: Exception) -> Unit,
     )
