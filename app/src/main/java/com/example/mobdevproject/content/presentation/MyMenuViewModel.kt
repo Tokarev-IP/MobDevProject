@@ -72,7 +72,6 @@ class MyMenuViewModel @Inject constructor(
             is MyMenuUiIntents.CheckMyMenu -> {
                 setUiState(UiStates.Loading)
                 checkMyMenu()
-                setScreenState(EditScreenStates.EditMyMenuScreen)
                 setUiState(UiStates.Show)
             }
 
@@ -90,6 +89,8 @@ class MyMenuViewModel @Inject constructor(
             is MyMenuUiIntents.CreateMyMenu -> {
                 setUiState(UiStates.Loading)
                 uploadMyMenuId(uiIntent.myMenuId)
+                setScreenState(EditScreenStates.EditMyMenuScreen)
+                setUiState(UiStates.Show)
             }
 
             is MyMenuUiIntents.GoToEditMyMenuMainScreen -> {
@@ -136,6 +137,7 @@ class MyMenuViewModel @Inject constructor(
         authUseCaseInterface.getCurrentUser(
             onUser = { user: FirebaseUser ->
                 userIdVM = user.uid
+                Log.d("DAVAI userId", user.uid)
                 viewModelScope.launch {
                     val myMenuId =
                         withContext(Dispatchers.IO) { firestoreReadUseCaseInterface.checkMyMenu(userId = user.uid) }
@@ -143,7 +145,9 @@ class MyMenuViewModel @Inject constructor(
                     if (myMenuId != null) {
                         myMenuIdVM = myMenuId.id
                         downloadMenuData(myMenuId.id)
+                        setScreenState(EditScreenStates.EditMyMenuScreen)
                     } else {
+                        setScreenState(EditScreenStates.CheckMyMenuScreen)
                         Log.e("error", "my Menu ID is null")
                     }
                 }

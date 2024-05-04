@@ -44,8 +44,10 @@ class ContentActivity : ComponentActivity() {
         ContentActivityCompose(
             context = this,
             onSignOut = {
-                settingsViewModel.setUiIntent(SettingsUiIntents.SignOut)
-                goToSignInActivity()
+                settingsViewModel.signOut(
+                    onSuccess = { goToSignInActivity() },
+                    userExists = {}
+                )
             }
         )
     }
