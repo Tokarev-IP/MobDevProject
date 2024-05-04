@@ -5,26 +5,34 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mobdevproject.content.data.MyMenuId
+import com.example.mobdevproject.content.presentation.MyMenuViewModel
 import com.example.mobdevproject.content.presentation.UiStates
+import java.util.UUID
 
 @Composable
 fun CheckMyMenuScreen(
     modifier: Modifier = Modifier,
-    uiState: UiStates,
-    onCreateMenu: () -> Unit,
+    myMenuViewModel: MyMenuViewModel = hiltViewModel(),
+    onCreateMenu: (myMenuId: MyMenuId) -> Unit,
     onRefresh: () -> Unit,
 ) {
+    val uiState by myMenuViewModel.getUiStateFlow().collectAsState()
+
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -36,7 +44,10 @@ fun CheckMyMenuScreen(
             }
 
             is UiStates.Show -> {
-                OutlinedButton(onClick = { onCreateMenu() }) {
+                OutlinedButton(
+                    onClick = {
+                        onCreateMenu(MyMenuId(id = UUID.randomUUID().toString()))
+                    }) {
                     Text(text = "Create a menu")
                 }
             }
@@ -57,5 +68,5 @@ fun CheckMyMenuScreen(
 @Preview(showBackground = true)
 @Composable
 fun CheckMyMenuPreview() {
-    CheckMyMenuScreen(uiState = UiStates.Error, onCreateMenu = { /*TODO*/ }, onRefresh = {})
+    CheckMyMenuScreen(onCreateMenu = { /*TODO*/ }, onRefresh = {})
 }
